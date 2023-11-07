@@ -14,8 +14,8 @@ public class CsInventoryItemController {
     private final CsInventoryItemService service;
 
     @PostMapping(value = "/cs-inventory-item")
-    public void addCsInventoryItem(
+    public String addCsInventoryItem(
             @RequestBody CsInventoryItemDto csInventoryItemDto) {
-        service.saveItem(csInventoryItemDto);
+        return service.saveInventoryItem(csInventoryItemDto);
     }
 }

@@ -2,6 +2,8 @@ package ru.belenko.steam.invest.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.belenko.steam.invest.app.exceptionhandling.ErrorType;
+import ru.belenko.steam.invest.app.exceptionhandling.InventoryInvestException;
 import ru.belenko.steam.invest.app.integration.SteamMarketIntegrationService;
 import ru.belenko.steam.invest.app.integration.dto.SteamPriceOverviewRs;
 import ru.belenko.steam.invest.app.mapper.ItemPricingMapper;
@@ -27,7 +29,7 @@ public class ItemPricingService {
 
     private final SteamMarketIntegrationService integrationService;
 
-    public void saveItemPricing(UUID itemId) {
+    public String saveItemPricing(UUID itemId) {
         ItemPricingEntity entity = ItemPricingEntity.builder()
                 .id(UUID.randomUUID())
                 .itemId(itemId)
@@ -35,6 +37,7 @@ public class ItemPricingService {
                 .pricingDate(OffsetDateTime.now().toLocalDate())
                 .build();
         repository.save(entity);
+        return String.valueOf(entity.getId());
     }
 
     public BigDecimal calculatePrice(UUID id) {
@@ -47,9 +50,8 @@ public class ItemPricingService {
         string = string.replace(",", ".");
         Pattern regex = Pattern.compile("(\\d+(?:\\.\\d+)?)");
         Matcher matcher = regex.matcher(string);
-        // TODO add not found case for bad responses
         if(!matcher.find()) {
-            throw new RuntimeException();
+            throw new InventoryInvestException(ErrorType.ITEM_PRICE_PARSE_ERROR);
         }
         return matcher.group(1);
     }
