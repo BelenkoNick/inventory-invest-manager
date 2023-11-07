@@ -9,4 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface CsInventoryItemRepository extends JpaRepository<CsInventoryItemEntity, UUID>, JpaSpecificationExecutor<CsInventoryItemEntity> {
+
+    String getNameById(UUID id);
+
 }

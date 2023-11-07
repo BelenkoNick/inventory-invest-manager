@@ -17,7 +17,5 @@ public class ItemPricingDto {
 
     private UUID itemId;
 
-    private String marketURL;
-
     private LocalDate pricingDate;
 }

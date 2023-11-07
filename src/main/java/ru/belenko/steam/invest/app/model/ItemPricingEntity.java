@@ -1,6 +1,7 @@
 package ru.belenko.steam.invest.app.model;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 @Table(name = "item_pricings")
 public class ItemPricingEntity {
@@ -26,9 +28,6 @@ public class ItemPricingEntity {
 
     @Column(name = "item_id")
     private UUID itemId;
-
-    @Column(name = "market_url")
-    private String marketURL;
 
     @Column(name = "current_price")
     private BigDecimal currentPrice;
