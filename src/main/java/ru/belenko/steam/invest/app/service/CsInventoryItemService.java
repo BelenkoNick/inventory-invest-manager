@@ -2,6 +2,7 @@ package ru.belenko.steam.invest.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.belenko.steam.invest.app.exceptionhandling.ErrorType;
 import ru.belenko.steam.invest.app.exceptionhandling.InventoryInvestException;
 import ru.belenko.steam.invest.app.mapper.CsInventoryItemMapper;
@@ -18,15 +19,31 @@ public class CsInventoryItemService {
 
     private final ItemPricingService itemPricingService;
 
+    @Transactional
     public String saveInventoryItem(CsInventoryItemDto csInventoryItemDto) {
+        if(checkDB(csInventoryItemDto.getName())) {
+            throw new InventoryInvestException(ErrorType.ITEM_ALREADY_EXIST);
+        }
         CsInventoryItemEntity entity = mapper.dtoToEntity(csInventoryItemDto);
         repository.save(entity);
 
-        if(itemPricingService.saveItemPricing(entity.getId()) == null) {
-            throw new InventoryInvestException(ErrorType.DATA_BASE_ERROR);
+        itemPricingService.saveItemPricing(entity.getId());
+        return String.valueOf(entity.getId());
+    }
+
+    //TODO add controller for this
+    public String updateInventoryItem(CsInventoryItemDto csInventoryItemDto) {
+        if(!checkDB(csInventoryItemDto.getName())) {
+            throw new InventoryInvestException(ErrorType.ITEM_DONT_EXIST);
         }
+        CsInventoryItemEntity entity = mapper.dtoToEntity(csInventoryItemDto);
+        repository.save(entity);
 
         return String.valueOf(entity.getId());
+    }
+
+    private boolean checkDB(String name) {
+        return repository.existsByName(name);
     }
 
 }

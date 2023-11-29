@@ -16,6 +16,10 @@ public enum ErrorType {
     DATA_BASE_ERROR("10", "Could not access DataBase."),
     EXTERNAL_SERVER_REQUEST_ERROR("11", "External servers are down."),
     STEAM_SERVER_REQUEST_ERROR("12", "Steam servers are down."),
+
+    // Validation
+    ITEM_ALREADY_EXIST("20", "Inventory item with this name already exists."),
+    ITEM_DONT_EXIST("20", "Inventory item with this name do not exists."),
     ;
 
     private final String code;
