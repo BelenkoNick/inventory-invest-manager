@@ -6,19 +6,17 @@ import ru.belenko.steam.invest.app.exceptionhandling.ErrorType;
 import ru.belenko.steam.invest.app.exceptionhandling.InventoryInvestException;
 import ru.belenko.steam.invest.app.integration.SteamMarketIntegrationService;
 import ru.belenko.steam.invest.app.integration.dto.SteamPriceOverviewRs;
-import ru.belenko.steam.invest.app.mapper.ItemPricingMapper;
 import ru.belenko.steam.invest.app.model.ItemPricingEntity;
-import ru.belenko.steam.invest.app.model.dto.CsInventoryItemDto;
-import ru.belenko.steam.invest.app.model.dto.ItemPricingDto;
 import ru.belenko.steam.invest.app.model.repository.CsInventoryItemRepository;
 import ru.belenko.steam.invest.app.model.repository.ItemPricingRepository;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +38,21 @@ public class ItemPricingService {
         return String.valueOf(entity.getId());
     }
 
+    public boolean refreshPrices() {
+        List<ItemPricingEntity> itemPricingEntityList = repository.findAll().stream().peek(
+                item -> {
+                    item.setCurrentPrice(calculatePrice(item.getItemId()));
+                    item.setPricingDate(OffsetDateTime.now().toLocalDate());
+                }
+        ).collect(Collectors.toList());
+        repository.saveAll(itemPricingEntityList);
+        return Boolean.TRUE;
+    }
+
     public BigDecimal calculatePrice(UUID id) {
         String name = csInventoryItemRepository.getNameById(id);
         SteamPriceOverviewRs rs = integrationService.getItemPriceOverview(name);
-        return new BigDecimal(getDecimalFromString(rs.getMedianPrice()));
+        return new BigDecimal(getDecimalFromString(rs.getLowestPrice()));
     }
 
     private String getDecimalFromString(String string) {

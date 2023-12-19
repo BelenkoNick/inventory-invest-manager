@@ -26,7 +26,6 @@ public class ResponseInterceptor implements ResponseBodyAdvice<Object> {
                                   ServerHttpRequest request, ServerHttpResponse response) {
 
         Object responseBody = new Object();
-        System.out.println("hello");
         if(body instanceof ErrorInfo) {
             responseBody = BaseResponse.fail((ErrorInfo) body);
         } else if (!(body instanceof BaseResponse) && !(body instanceof String)) {

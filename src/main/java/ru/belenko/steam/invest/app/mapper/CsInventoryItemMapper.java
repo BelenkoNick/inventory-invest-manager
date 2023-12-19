@@ -11,4 +11,6 @@ public interface CsInventoryItemMapper {
 
     @Mapping(target = "id", expression = "java(UUID.randomUUID())")
     CsInventoryItemEntity dtoToEntity(CsInventoryItemDto csInventoryItemDto);
+
+    CsInventoryItemDto entityToDto(CsInventoryItemEntity csInventoryItemEntity);
 }

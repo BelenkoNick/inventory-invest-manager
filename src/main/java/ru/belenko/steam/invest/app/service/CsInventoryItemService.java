@@ -10,6 +10,8 @@ import ru.belenko.steam.invest.app.model.CsInventoryItemEntity;
 import ru.belenko.steam.invest.app.model.dto.CsInventoryItemDto;
 import ru.belenko.steam.invest.app.model.repository.CsInventoryItemRepository;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class CsInventoryItemService {
@@ -18,6 +20,10 @@ public class CsInventoryItemService {
     private final CsInventoryItemMapper mapper;
 
     private final ItemPricingService itemPricingService;
+
+    public CsInventoryItemDto getInventoryItem(UUID itemId) {
+        return mapper.entityToDto(repository.getById(itemId));
+    }
 
     @Transactional
     public String saveInventoryItem(CsInventoryItemDto csInventoryItemDto) {

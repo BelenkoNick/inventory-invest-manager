@@ -1,5 +1,6 @@
 package ru.belenko.steam.invest.app.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 @Table(name = "reports")
 public class ReportEntity {
@@ -24,6 +26,9 @@ public class ReportEntity {
 
     @Column(name = "item_id")
     private UUID itemId;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @Column(name = "profit")
     private BigDecimal profit;
