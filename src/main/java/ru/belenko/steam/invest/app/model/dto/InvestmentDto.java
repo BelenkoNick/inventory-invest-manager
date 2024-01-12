@@ -15,8 +15,6 @@ import java.util.UUID;
 @Builder
 public class InvestmentDto {
 
-    private UUID id;
-
     private UUID itemId;
 
     private Integer quantity;

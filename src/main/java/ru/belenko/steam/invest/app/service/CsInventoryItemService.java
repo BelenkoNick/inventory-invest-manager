@@ -3,6 +3,8 @@ package ru.belenko.steam.invest.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.belenko.steam.invest.app.common.ItemTypes;
+import ru.belenko.steam.invest.app.common.Rarities;
 import ru.belenko.steam.invest.app.exceptionhandling.ErrorType;
 import ru.belenko.steam.invest.app.exceptionhandling.InventoryInvestException;
 import ru.belenko.steam.invest.app.mapper.CsInventoryItemMapper;
@@ -10,7 +12,9 @@ import ru.belenko.steam.invest.app.model.CsInventoryItemEntity;
 import ru.belenko.steam.invest.app.model.dto.CsInventoryItemDto;
 import ru.belenko.steam.invest.app.model.repository.CsInventoryItemRepository;
 
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +46,7 @@ public class CsInventoryItemService {
         if(!checkDB(csInventoryItemDto.getName())) {
             throw new InventoryInvestException(ErrorType.ITEM_DONT_EXIST);
         }
-        CsInventoryItemEntity entity = mapper.dtoToEntity(csInventoryItemDto);
+        CsInventoryItemEntity entity = mapper.updateEntity(csInventoryItemDto, repository.getByName(csInventoryItemDto.getName()));
         repository.save(entity);
 
         return String.valueOf(entity.getId());

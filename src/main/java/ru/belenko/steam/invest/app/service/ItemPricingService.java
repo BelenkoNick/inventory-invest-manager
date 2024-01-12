@@ -27,7 +27,7 @@ public class ItemPricingService {
 
     private final SteamMarketIntegrationService integrationService;
 
-    public String saveItemPricing(UUID itemId) {
+    public void saveItemPricing(UUID itemId) {
         ItemPricingEntity entity = ItemPricingEntity.builder()
                 .id(UUID.randomUUID())
                 .itemId(itemId)
@@ -35,7 +35,6 @@ public class ItemPricingService {
                 .pricingDate(OffsetDateTime.now().toLocalDate())
                 .build();
         repository.save(entity);
-        return String.valueOf(entity.getId());
     }
 
     public boolean refreshPrices() {

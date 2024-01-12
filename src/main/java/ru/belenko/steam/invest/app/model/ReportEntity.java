@@ -1,7 +1,9 @@
 package ru.belenko.steam.invest.app.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "reports")
 public class ReportEntity {
 

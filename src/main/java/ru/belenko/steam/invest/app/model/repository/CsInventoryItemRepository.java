@@ -16,4 +16,6 @@ public interface CsInventoryItemRepository extends JpaRepository<CsInventoryItem
 
     boolean existsByName(String name);
 
+    CsInventoryItemEntity getByName(String name);
+
 }

@@ -10,5 +10,6 @@ public enum ItemTypes {
     AGENT_SKIN,
     KNIFE_SKIN,
     RIBBON,
-    KEY
+    GRAFFITI,
+    UNKNOWN
 }
